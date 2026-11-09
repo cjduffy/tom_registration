@@ -53,7 +53,7 @@ class ApprovalRegistrationView(CreateView):
                 #                 f'has requested to register in your TOM. Please approve or delete this user'
                 #                 f' <a href="{link_to_user_list}">here</a>.',
                 #)
-                client = WebClient(token=settings.SLACK_BOT_TOKEN)
+                client = WebClient(token=settings.SLACK_ADMIN_BOT)
                 client.chat_postMessage(
                         channel=settings.SLACK_ADMIN_CHANNEL,
                         blocks=[
