@@ -15,6 +15,9 @@ from tom_registration.registration_flows.approval_required.forms import ApproveU
 from tom_registration.registration_flows.approval_required.forms import RegistrationApprovalForm
 from tom_registration import __version__
 
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
+
 logger = logging.getLogger(__name__)
 
 
@@ -50,6 +53,39 @@ class ApprovalRegistrationView(CreateView):
                                  f'has requested to register in your TOM. Please approve or delete this user'
                                  f' <a href="{link_to_user_list}">here</a>.',
                 )
+                client = WebClient(token=settings.SLACK_BOT_TOKEN)
+                client.chat_postMessage(
+                        channel=settings.SLACK_ADMIN_CHANNEL,
+                        blocks=[
+                            {
+                                "type": "header",
+                                "text": {
+                                    "type": "plain text",
+                                    "text": "New User Request"
+                                }
+                            },
+                            {
+                                "type:": "section",
+                                "text" : {
+                                    "type": "mrkdown",
+                                    "text": (
+                                        f"{self.object.first_name} {self.object.last_name}\
+                                        has requested to register for the Marshal. \
+                                        Please approve or delete this user"
+                                    )
+                                }
+                            },
+                            {
+                                "type": "section",
+                                "text": {
+                                    "type": "mrkdown",
+                                    "text": f"{link_to_user_list}|here"
+                            }
+                        }
+                    ]
+                )
+            except SlackApiError as e:
+                logger.error(f"Unable to post to slack {e}")
             except (SMTPException, ConnectionRefusedError) as error:
                 logger.error(f'Unable to send email: {error}')
 
