@@ -45,14 +45,14 @@ class ApprovalRegistrationView(CreateView):
             try:
                 current_domain = Site.objects.get_current().domain
                 link_to_user_list = f'https://{current_domain}{reverse("user-list")}'
-                mail_managers(
-                    subject=f'Registration Request from {self.object.first_name} {self.object.last_name}',
-                    message='',  # leave this blank in favor of html_message
-                    fail_silently=False,
-                    html_message=f'{self.object.first_name} {self.object.last_name} '
-                                 f'has requested to register in your TOM. Please approve or delete this user'
-                                 f' <a href="{link_to_user_list}">here</a>.',
-                )
+                #mail_managers(
+                #    subject=f'Registration Request from {self.object.first_name} {self.object.last_name}',
+                #    message='',  # leave this blank in favor of html_message
+                #    fail_silently=False,
+                #    html_message=f'{self.object.first_name} {self.object.last_name} '
+                #                 f'has requested to register in your TOM. Please approve or delete this user'
+                #                 f' <a href="{link_to_user_list}">here</a>.',
+                #)
                 client = WebClient(token=settings.SLACK_BOT_TOKEN)
                 client.chat_postMessage(
                         channel=settings.SLACK_ADMIN_CHANNEL,
