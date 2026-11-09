@@ -56,18 +56,19 @@ class ApprovalRegistrationView(CreateView):
                 client = WebClient(token=settings.SLACK_ADMIN_BOT)
                 client.chat_postMessage(
                         channel=settings.SLACK_ADMIN_CHANNEL,
+                        text="New User Request: A new user has requested to register for the Marshal.",
                         blocks=[
                             {
                                 "type": "header",
                                 "text": {
-                                    "type": "plain text",
+                                    "type": "plain_text",
                                     "text": "New User Request"
                                 }
                             },
                             {
-                                "type:": "section",
+                                "type": "section",
                                 "text" : {
-                                    "type": "mrkdown",
+                                    "type": "mrkdwn",
                                     "text": (
                                         f"{self.object.first_name} {self.object.last_name}\
                                         has requested to register for the Marshal. \
@@ -78,7 +79,7 @@ class ApprovalRegistrationView(CreateView):
                             {
                                 "type": "section",
                                 "text": {
-                                    "type": "mrkdown",
+                                    "type": "mrkdwn",
                                     "text": f"{link_to_user_list}|here"
                             }
                         }
