@@ -70,7 +70,7 @@ class ApprovalRegistrationView(CreateView):
                                 "text" : {
                                     "type": "mrkdwn",
                                     "text": (
-                                        f"{self.object.first_name} {self.object.last_name}"
+                                        f"{self.object.first_name} {self.object.last_name} "
                                         "has requested to register for the Marshal. "
                                         "Please approve or delete this user"
                                     )
